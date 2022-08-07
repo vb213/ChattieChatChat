@@ -7,9 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
+import java.net.*;
 
 public class CommunicationChannel {
     private ServerSocket serverSocket;
@@ -19,12 +17,18 @@ public class CommunicationChannel {
 
     private Controller c;
     private String ip;
+    private boolean serverSocketWaiting = false;
+
 
     public CommunicationChannel(Controller c) {
         this.c = c;
     }
 
     public void waitForConnection(int port) {
+        if(serverSocketWaiting)
+            return;
+        serverSocketWaiting = true;
+        c.setLineStatusLabel(true);
         new Thread(() -> {
             try {
                 waitingThreadMethod(port);
@@ -35,34 +39,50 @@ public class CommunicationChannel {
     }
 
     private void waitingThreadMethod(int port) throws IOException {
-        serverSocket = new ServerSocket(port);
         System.out.println("Waiting for pairing :)(:");
         try {
+            serverSocket = new ServerSocket(port);
             clientSocket = serverSocket.accept();
-        } catch (SocketException e){
-            // Wartevorgang abgebrochen
+        }catch (BindException e) {
+            c.setLineStatusLabel(false);
+            System.out.println("Port is bound!");
             return;
+        }catch (SocketException e){
+            // Wartevorgang abgebrochen
+            c.setConnectionStatusLabel(false);
+            return;
+        } finally {
+            serverSocketWaiting = false;
         }
-        out = new PrintWriter(clientSocket.getOutputStream(), true);
-        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         ip = clientSocket.getInetAddress().getHostAddress();
+        initIOBuffers();
+
+        serverSocket.close();
         System.out.println("Server connected");
         startListeningThread();
     }
 
-    public void connectTo(String ip, int port) {
+    public void connectTo(String ip, int port) throws ConnectException {
         try {
             stop();
             System.out.println("Stopped and tried to connect");
             clientSocket = new Socket(ip, port);
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            System.out.println("Client connected");
             this.ip = ip;
+            initIOBuffers();
+
+            System.out.println("Client connected");
+
             startListeningThread();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void initIOBuffers() throws IOException{
+        out = new PrintWriter(clientSocket.getOutputStream(), true);
+        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+        Platform.runLater(() -> c.setConnectionStatusLabel(true));
     }
 
     public void sendMessage(String m) {
@@ -100,6 +120,7 @@ public class CommunicationChannel {
         if(out != null) out.close();
         if(clientSocket != null) clientSocket.close();
         if(serverSocket != null)serverSocket.close();
+        c.setConnectionStatusLabel(false);
     }
 
     public boolean isConnected() {

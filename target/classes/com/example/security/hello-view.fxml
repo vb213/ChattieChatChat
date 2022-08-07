@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="232.0" prefWidth="474.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.security.Controller">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.security.Controller">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -12,7 +12,15 @@
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <TextField fx:id="ip_field" text="127.0.0.1" />
-            <Button fx:id="goOnline_Button" mnemonicParsing="false" onAction="#openPort" text="Go online" />
+            <Button fx:id="connect_button" mnemonicParsing="false" onAction="#connect_toIP" text="Connect" />
+            <Label fx:id="lineStatus_label" text="Online">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+               </HBox.margin></Label>
+            <Label fx:id="connectionStatus_label" text="Not Connected">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+               </HBox.margin></Label>
          </children>
       </HBox>
       <ScrollPane prefHeight="200.0" prefWidth="200.0">
