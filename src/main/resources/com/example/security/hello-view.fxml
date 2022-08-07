@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" prefHeight="232.0" prefWidth="474.0" spacing="20.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.security.Controller">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <TextField fx:id="ip_field" text="127.0.0.1" />
+            <Button fx:id="goOnline_Button" mnemonicParsing="false" onAction="#openPort" text="Go online" />
+         </children>
+      </HBox>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="chat_label" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <TextArea fx:id="message_field" prefHeight="31.0" prefWidth="434.0" text="Test" />
+            <Button fx:id="send_button" minWidth="-Infinity" mnemonicParsing="false" onAction="#sendMessage" text="Send" />
+         </children>
+      </HBox>
+   </children>
+</VBox>
