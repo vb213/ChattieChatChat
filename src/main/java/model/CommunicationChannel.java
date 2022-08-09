@@ -1,6 +1,6 @@
 package model;
 
-import com.example.security.Controller;
+import view.Controller;
 import javafx.application.Platform;
 
 import java.io.BufferedReader;

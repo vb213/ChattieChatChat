@@ -3,6 +3,6 @@ module com.example.security {
     requires javafx.fxml;
 
 
-    opens com.example.security to javafx.fxml;
-    exports com.example.security;
+    opens view to javafx.fxml;
+    exports view;
 }

@@ -1,9 +1,7 @@
 package test;
 
-import com.example.security.Controller;
+import view.Controller;
 import model.CommunicationChannel;
-
-import java.io.IOException;
 
 public class TestMain extends Controller {
 

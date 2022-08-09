@@ -1,4 +1,4 @@
-package com.example.security;
+package view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
